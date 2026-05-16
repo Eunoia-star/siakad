@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Segoe UI;
+}
+.login-body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f172a, #2563eb);
+}
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+.login-card h1 {
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 10px;
+}
+.login-card p {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+.login-card input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+}
+.login-card button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f3f4f6;
+}
+.sidebar {
+    width: 260px;
+    background: #0f172a;
+    color: white;
+    padding: 24px 18px;
+}
+.brand {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #60a5fa;
+}
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.menu-item,
+.menu-group span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+}
+.menu-item:hover {
+    background: #1e293b;
+}
+.menu-group {
+    padding: 8px 0;
+}
+.menu-group span {
+    color: #cbd5e1;
+}
+.menu-group a {
+    display: block;
+    padding: 9px 14px 9px 42px;
+    color: #e5e7eb;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.menu-group a:hover {
+    background: #1e293b;
+}
+.logout {
+    margin-top: 20px;
+    color: #fecaca;
+}
+.content {
+    flex: 1;
+    padding: 28px;
+}
+.topbar {
+    background: white;
+    padding: 20px 24px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+.topbar h1 {
+    margin: 0;
+    font-size: 28px;
+}
+.topbar p {
+    margin: 6px 0 0;
+    color: #64748b;
+}
+.user-badge {
+    background: #dbeafe;
+    color: #1e3a8a;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+.info-card {
+    background: white;
+    padding: 24px;
+    border-radius: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+.info-card i {
+    font-size: 34px;
+    color: #2563eb;
+}
+.info-card h3 {
+    margin: 0 0 6px;
+}
+.info-card p {
+    margin: 0;
+    color: #64748b;
+}
+.profile-card {
+    background: white;
+    padding: 28px;
+    border-radius: 22px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+.avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    color: #2563eb;
+}
+@media (max-width: 768px) {
+    .app-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+    }
+    .content {
+        padding: 18px;
+    }
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
