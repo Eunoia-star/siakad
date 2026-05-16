@@ -1,5 +1,8 @@
 <?php
-$role = $_SESSION['role'];
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$role = $_SESSION['role'] ?? '';
 ?>
 
 <aside class="sidebar">
@@ -17,7 +20,7 @@ $role = $_SESSION['role'];
                 Dashboard
             </a>
 
-            <a href="../admin/mahasiswa.php" class="menu-item">
+            <a href="../admin/mahasiswa/index.php" class="menu-item">
                 <i class="bi bi-mortarboard-fill"></i>
                 Mahasiswa
             </a>

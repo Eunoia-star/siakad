@@ -41,13 +41,13 @@
 
                 <form action="auth/login_proses.php" method="POST">
 
-                    <label>Email / Username</label>
+                    <label>Username</label>
                     <div class="login-input">
                         <i class="bi bi-person"></i>
                         <input
                             type="text"
                             name="login"
-                            placeholder="Masukkan email, NIM, atau username"
+                            placeholder="Username/Email"
                             required>
                     </div>
 
