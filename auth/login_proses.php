@@ -1,31 +1,58 @@
 <?php
+
 session_start();
+
 include "../config/koneksi.php";
-$login = $_POST['login'];
-$password = md5($_POST['password']);
+
+$login = $_POST['login'] ?? '';
+$password = $_POST['password'] ?? '';
+
+$login = mysqli_real_escape_string($conn, $login);
+$password = md5($password);
 
 $query = mysqli_query(
     $conn,
-    "SELECT * FROM users WHERE (username='$login' OR email='$login') AND password='$password'" );
+    "SELECT * FROM users 
+     WHERE (username='$login' OR email='$login') 
+     AND password='$password'"
+);
 
 $data = mysqli_fetch_assoc($query);
+
 if ($data) {
+
     $_SESSION['login'] = true;
     $_SESSION['id'] = $data['id'];
     $_SESSION['role'] = $data['role'];
     $_SESSION['username'] = $data['username'];
+
     if ($data['role'] == 'super_admin') {
-        header("Location:../admin/dashboard.php");
-    } elseif (
-        $data['role'] == 'dosen') {
-        header("Location:../dosen/dashboard.php");
-    } elseif (
-        $data['role'] == 'mahasiswa') {
-        header("Location:../mahasiswa/dashboard.php");
+
+        header("Location: ../admin/dashboard.php");
+        exit;
+
+    } elseif ($data['role'] == 'dosen') {
+
+        header("Location: ../dosen/dashboard.php");
+        exit;
+
+    } elseif ($data['role'] == 'mahasiswa') {
+
+        header("Location: ../mahasiswa/dashboard.php");
+        exit;
+
+    } else {
+
+        header("Location: ../login.php");
+        exit;
     }
+
 } else {
-    echo "<script> 
-        alert('Login gagal');
-        window.location.href = '../login.php';
-    </script>";
+
+    echo "
+        <script>
+            alert('Login gagal');
+            window.location.href = '../login.php';
+        </script>
+    ";
 }
