@@ -2,6 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 $role = $_SESSION['role'] ?? '';
 ?>
 
@@ -13,93 +14,126 @@ $role = $_SESSION['role'] ?? '';
 
     <nav class="sidebar-menu">
 
+        <!-- =========================
+             SUPER ADMIN
+        ========================== -->
         <?php if ($role == 'super_admin') { ?>
 
-            <a href="../admin/dashboard.php" class="menu-item">
+            <a href="/siakad/admin/dashboard.php" class="menu-item">
                 <i class="bi bi-grid-fill"></i>
                 Dashboard
             </a>
 
-            <a href="../admin/mahasiswa/index.php" class="menu-item">
+            <a href="/siakad/admin/mahasiswa/index.php" class="menu-item">
                 <i class="bi bi-mortarboard-fill"></i>
                 Mahasiswa
             </a>
 
-            <a href="../admin/dosen.php" class="menu-item">
+            <a href="/siakad/admin/dosen/index.php" class="menu-item">
                 <i class="bi bi-person-badge-fill"></i>
                 Dosen
             </a>
 
-            <a href="../admin/mata_kuliah.php" class="menu-item">
+            <a href="/siakad/admin/mata_kuliah/index.php" class="menu-item">
                 <i class="bi bi-book-fill"></i>
                 Mata Kuliah
             </a>
 
-            <a href="../admin/jadwal.php" class="menu-item">
+            <a href="/siakad/admin/jadwal/index.php" class="menu-item">
                 <i class="bi bi-calendar-week-fill"></i>
                 Jadwal Perkuliahan
             </a>
 
         <?php } ?>
 
+
+
+        <!-- =========================
+             DOSEN
+        ========================== -->
         <?php if ($role == 'dosen') { ?>
 
-            <a href="../dosen/dashboard.php" class="menu-item">
+            <a href="/siakad/dosen/dashboard.php" class="menu-item">
                 <i class="bi bi-grid-fill"></i>
                 Dashboard
             </a>
 
-            <a href="../dosen/profil.php" class="menu-item">
+            <a href="/siakad/dosen/profil.php" class="menu-item">
                 <i class="bi bi-person-circle"></i>
                 Profil Dosen
             </a>
 
-            <a href="../dosen/mahasiswa.php" class="menu-item">
+            <a href="/siakad/dosen/mahasiswa/index.php" class="menu-item">
                 <i class="bi bi-people-fill"></i>
                 Mahasiswa
             </a>
 
             <div class="menu-group">
+
                 <span>
                     <i class="bi bi-journal-bookmark-fill"></i>
                     Perkuliahan
                 </span>
 
-                <a href="../dosen/mata_kuliah.php">
+                <a href="/siakad/dosen/mata_kuliah/index.php">
                     Mata Kuliah
                 </a>
+
             </div>
 
         <?php } ?>
 
+
+
+        <!-- =========================
+             MAHASISWA
+        ========================== -->
         <?php if ($role == 'mahasiswa') { ?>
 
-            <a href="../mahasiswa/dashboard.php" class="menu-item">
+            <a href="/siakad/mahasiswa/dashboard.php" class="menu-item">
                 <i class="bi bi-grid-fill"></i>
                 Dashboard
             </a>
 
-            <a href="../mahasiswa/profil.php" class="menu-item">
+            <a href="/siakad/mahasiswa/profil.php" class="menu-item">
                 <i class="bi bi-person-circle"></i>
                 Profil Mahasiswa
             </a>
 
             <div class="menu-group">
+
                 <span>
                     <i class="bi bi-journal-bookmark-fill"></i>
                     Perkuliahan
                 </span>
 
-                <a href="../mahasiswa/krs.php">KRS</a>
-                <a href="../mahasiswa/jadwal.php">Jadwal Perkuliahan</a>
-                <a href="../mahasiswa/khs.php">KHS</a>
+                <a href="/siakad/mahasiswa/krs/index.php">
+                    KRS
+                </a>
+
+                <a href="/siakad/mahasiswa/jadwal/index.php">
+                    Jadwal Perkuliahan
+                </a>
+
+                <a href="/siakad/mahasiswa/khs/index.php">
+                    KHS
+                </a>
+
             </div>
 
         <?php } ?>
 
-        <a href="../auth/logout.php" class="menu-item logout">
+
+
+        <!-- =========================
+             LOGOUT
+        ========================== -->
+        <a href="/siakad/auth/logout.php" class="menu-item logout">
+
             <i class="bi bi-box-arrow-right"></i>
+
             Logout
+
         </a>
 
     </nav>
