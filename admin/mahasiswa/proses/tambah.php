@@ -6,20 +6,6 @@ include "../../config/koneksi.php";
 include "../../part/header.php";
 include "../../part/sidebar.php";
 
-function aman($data)
-{
-    return htmlspecialchars($data ?? '', ENT_QUOTES, 'UTF-8');
-}
-
-$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE id = '$id'");
-$data = mysqli_fetch_assoc($query);
-
-if (!$data) {
-    echo "<script>alert('Data mahasiswa tidak ditemukan'); window.location.href='index.php';</script>";
-    exit;
-}
-
 $jurusan = mysqli_query($conn, "
     SELECT j.*, f.nama_fakultas
     FROM jurusan j
@@ -34,29 +20,27 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
 
     <header class="topbar">
         <div>
-            <h1>Edit Mahasiswa</h1>
-            <p>Perbarui data mahasiswa dan akun login.</p>
+            <h1>Tambah Mahasiswa</h1>
+            <p>Tambah data mahasiswa dan buat akun login otomatis.</p>
         </div>
 
         <div class="user-badge">
-            <?= aman($_SESSION['username'] ?? 'Admin'); ?>
+            <?= htmlspecialchars($_SESSION['username'] ?? 'Admin'); ?>
         </div>
     </header>
 
     <section class="form-card">
-        <form action="proses/edit.php" method="POST" enctype="multipart/form-data" class="form-grid">
-            <input type="hidden" name="id" value="<?= $data['id']; ?>">
-            <input type="hidden" name="foto_lama" value="<?= aman($data['foto']); ?>">
-            <input type="hidden" name="nim_lama" value="<?= aman($data['nim']); ?>">
+        <form action="proses/tambah.php" method="POST" enctype="multipart/form-data" class="form-grid">
 
             <div class="form-group">
-                <label>NIM <span>*</span></label>
-                <input type="text" name="nim" value="<?= aman($data['nim']); ?>" required>
+                <label>NIM</label>
+                <input type="text" name="nim" placeholder="Kosongkan jika ingin generate otomatis">
+                <small>Jika dikosongkan, NIM dibuat otomatis berdasarkan angkatan dan jurusan.</small>
             </div>
 
             <div class="form-group">
                 <label>Nama Mahasiswa <span>*</span></label>
-                <input type="text" name="nama" value="<?= aman($data['nama']); ?>" required>
+                <input type="text" name="nama" required placeholder="Masukkan nama mahasiswa">
             </div>
 
             <div class="form-group">
@@ -64,8 +48,8 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
                 <select name="jurusan_id" required>
                     <option value="">-- Pilih Jurusan --</option>
                     <?php while ($j = mysqli_fetch_assoc($jurusan)) { ?>
-                        <option value="<?= $j['id']; ?>" <?= $j['id'] == $data['jurusan_id'] ? 'selected' : ''; ?>>
-                            <?= aman($j['nama_jurusan']); ?> - <?= aman($j['nama_fakultas']); ?>
+                        <option value="<?= $j['id']; ?>">
+                            <?= htmlspecialchars($j['nama_jurusan']); ?> - <?= htmlspecialchars($j['nama_fakultas'] ?? '-'); ?>
                         </option>
                     <?php } ?>
                 </select>
@@ -73,17 +57,17 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
 
             <div class="form-group">
                 <label>Prodi <span>*</span></label>
-                <input type="text" name="prodi" value="<?= aman($data['prodi']); ?>" required>
+                <input type="text" name="prodi" required placeholder="Contoh: Sistem Informasi">
             </div>
 
             <div class="form-group">
                 <label>Angkatan <span>*</span></label>
-                <input type="number" name="angkatan" value="<?= aman($data['angkatan']); ?>" required min="2000" max="2099">
+                <input type="number" name="angkatan" required min="2000" max="2099" placeholder="Contoh: 2024">
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" value="<?= aman($data['email']); ?>">
+                <input type="email" name="email" placeholder="nama@email.com">
             </div>
 
             <div class="form-group">
@@ -91,30 +75,26 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
                 <select name="dosen_pa_id">
                     <option value="">-- Belum Dipilih --</option>
                     <?php while ($d = mysqli_fetch_assoc($dosen)) { ?>
-                        <option value="<?= $d['id']; ?>" <?= $d['id'] == $data['dosen_pa_id'] ? 'selected' : ''; ?>>
-                            <?= aman($d['nama']); ?>
-                        </option>
+                        <option value="<?= $d['id']; ?>"><?= htmlspecialchars($d['nama']); ?></option>
                     <?php } ?>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Foto Baru</label>
+                <label>Foto</label>
                 <input type="file" name="foto" accept="image/*">
-                <?php if (!empty($data['foto'])) { ?>
-                    <small>Foto saat ini: <?= aman($data['foto']); ?></small>
-                <?php } ?>
             </div>
 
             <div class="form-group form-full">
                 <label>Alamat</label>
-                <textarea name="alamat" rows="4"><?= aman($data['alamat']); ?></textarea>
+                <textarea name="alamat" rows="4" placeholder="Masukkan alamat mahasiswa"></textarea>
             </div>
 
             <div class="form-action form-full">
                 <a href="index.php" class="btn-secondary">Kembali</a>
-                <button type="submit" class="btn-primary">Update Mahasiswa</button>
+                <button type="submit" class="btn-primary">Simpan Mahasiswa</button>
             </div>
+
         </form>
     </section>
 

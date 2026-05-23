@@ -15,68 +15,54 @@ $cari = $_GET['cari'] ?? '';
 $cari = mysqli_real_escape_string($conn, $cari);
 
 $where = "";
-
 if ($cari != '') {
     $where = "
-        WHERE 
-        m.nim LIKE '%$cari%' OR
-        m.nama LIKE '%$cari%' OR
-        m.prodi LIKE '%$cari%' OR
-        m.angkatan LIKE '%$cari%' OR
-        m.email LIKE '%$cari%' OR
+        WHERE
+        d.nidn LIKE '%$cari%' OR
+        d.nip LIKE '%$cari%' OR
+        d.nama LIKE '%$cari%' OR
+        d.email LIKE '%$cari%' OR
+        d.no_hp LIKE '%$cari%' OR
         j.nama_jurusan LIKE '%$cari%' OR
-        f.nama_fakultas LIKE '%$cari%' OR
-        d.nama LIKE '%$cari%'
+        f.nama_fakultas LIKE '%$cari%'
     ";
 }
 
 $query = mysqli_query($conn, "
-    SELECT 
-        m.*,
+    SELECT
+        d.*,
         j.nama_jurusan,
-        f.nama_fakultas,
-        d.nama AS nama_dosen_pa
-    FROM mahasiswa m
-    LEFT JOIN jurusan j ON m.jurusan_id = j.id
+        f.nama_fakultas
+    FROM dosen d
+    LEFT JOIN jurusan j ON d.jurusan_id = j.id
     LEFT JOIN fakultas f ON j.fakultas_id = f.id
-    LEFT JOIN dosen d ON m.dosen_pa_id = d.id
     $where
-    ORDER BY m.id DESC
+    ORDER BY d.id DESC
 ");
 
 $total = mysqli_num_rows($query);
 ?>
 
 <main class="content">
-
     <header class="topbar">
         <div>
-            <h1>Data Mahasiswa</h1>
-            <p>Kelola data mahasiswa, akun login, jurusan, dan dosen PA.</p>
+            <h1>Data Dosen</h1>
+            <p>Kelola data dosen, akun login, jurusan, dan fakultas.</p>
         </div>
-
-        <div class="user-badge">
-            <?= aman($_SESSION['username'] ?? 'Admin'); ?>
-        </div>
+        <div class="user-badge"><?= aman($_SESSION['username'] ?? 'Admin'); ?></div>
     </header>
 
     <section class="table-card">
-
         <div class="table-header">
             <div>
-                <h3>Daftar Mahasiswa</h3>
-                <p>Total data: <strong><?= $total; ?></strong> mahasiswa</p>
+                <h3>Daftar Dosen</h3>
+                <p>Total data: <strong><?= $total; ?></strong> dosen</p>
             </div>
 
             <div class="button-group">
-                <a href="import_csv.php" class="btn-secondary">
-                    <i class="bi bi-file-earmark-spreadsheet"></i>
-                    Import CSV
-                </a>
-
                 <a href="tambah.php" class="btn-primary">
                     <i class="bi bi-plus-circle"></i>
-                    Tambah Mahasiswa
+                    Tambah Dosen
                 </a>
             </div>
         </div>
@@ -86,9 +72,8 @@ $total = mysqli_num_rows($query);
                 type="text"
                 name="cari"
                 value="<?= aman($cari); ?>"
-                placeholder="Cari NIM, nama, prodi, jurusan, dosen PA..."
+                placeholder="Cari NIDN, NIP, nama, jurusan, fakultas..."
             >
-
             <button type="submit" class="btn-primary">Cari</button>
             <?php if ($cari != '') { ?>
                 <a href="index.php" class="btn-secondary">Reset</a>
@@ -101,45 +86,35 @@ $total = mysqli_num_rows($query);
                     <tr>
                         <th>No</th>
                         <th>Foto</th>
-                        <th>NIM</th>
+                        <th>NIDN</th>
+                        <th>NIP</th>
                         <th>Nama</th>
-                        <th>Prodi</th>
-                        <th>Angkatan</th>
                         <th>Email</th>
+                        <th>No HP</th>
                         <th>Jurusan</th>
                         <th>Fakultas</th>
-                        <th>Dosen PA</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     <?php if ($total > 0) { ?>
                         <?php $no = 1; while ($row = mysqli_fetch_assoc($query)) { ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-
                                 <td>
-                                    <?php if (!empty($row['foto']) && file_exists("../../uploads/mahasiswa/" . $row['foto'])) { ?>
-                                        <img
-                                            src="/siakad/uploads/mahasiswa/<?= aman($row['foto']); ?>"
-                                            class="table-photo"
-                                            alt="Foto Mahasiswa"
-                                        >
+                                    <?php if (!empty($row['foto']) && file_exists("../../uploads/dosen/" . $row['foto'])) { ?>
+                                        <img src="/siakad/uploads/dosen/<?= aman($row['foto']); ?>" class="table-photo" alt="Foto Dosen">
                                     <?php } else { ?>
-                                        <div class="table-avatar"><i class="bi bi-person-fill"></i></div>
+                                        <div class="table-avatar"><i class="bi bi-person-badge-fill"></i></div>
                                     <?php } ?>
                                 </td>
-
-                                <td><?= aman($row['nim']); ?></td>
+                                <td><?= aman($row['nidn']); ?></td>
+                                <td><?= aman($row['nip']); ?></td>
                                 <td><?= aman($row['nama']); ?></td>
-                                <td><?= aman($row['prodi']); ?></td>
-                                <td><?= aman($row['angkatan']); ?></td>
                                 <td><?= aman($row['email']); ?></td>
+                                <td><?= aman($row['no_hp']); ?></td>
                                 <td><?= aman($row['nama_jurusan']); ?></td>
                                 <td><?= aman($row['nama_fakultas']); ?></td>
-                                <td><?= aman($row['nama_dosen_pa']); ?></td>
-
                                 <td>
                                     <div class="action-group">
                                         <a href="detail.php?id=<?= $row['id']; ?>" class="btn-action detail">Detail</a>
@@ -151,7 +126,7 @@ $total = mysqli_num_rows($query);
                         <?php } ?>
                     <?php } else { ?>
                         <tr>
-                            <td colspan="11" class="empty-table">Data mahasiswa tidak ditemukan.</td>
+                            <td colspan="10" class="empty-table">Data dosen tidak ditemukan.</td>
                         </tr>
                     <?php } ?>
                 </tbody>

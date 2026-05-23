@@ -12,11 +12,11 @@ function aman($data)
 }
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$query = mysqli_query($conn, "SELECT * FROM mahasiswa WHERE id = '$id'");
+$query = mysqli_query($conn, "SELECT * FROM dosen WHERE id = '$id'");
 $data = mysqli_fetch_assoc($query);
 
 if (!$data) {
-    echo "<script>alert('Data mahasiswa tidak ditemukan'); window.location.href='index.php';</script>";
+    echo "<script>alert('Data dosen tidak ditemukan'); window.location.href='index.php';</script>";
     exit;
 }
 
@@ -27,37 +27,23 @@ $jurusan = mysqli_query($conn, "
     ORDER BY f.nama_fakultas ASC, j.nama_jurusan ASC
 ");
 
-$dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
+$username_lama = !empty($data['nip']) ? $data['nip'] : $data['nidn'];
 ?>
 
 <main class="content">
-
     <header class="topbar">
         <div>
-            <h1>Edit Mahasiswa</h1>
-            <p>Perbarui data mahasiswa dan akun login.</p>
+            <h1>Edit Dosen</h1>
+            <p>Perbarui data dosen dan akun login.</p>
         </div>
-
-        <div class="user-badge">
-            <?= aman($_SESSION['username'] ?? 'Admin'); ?>
-        </div>
+        <div class="user-badge"><?= aman($_SESSION['username'] ?? 'Admin'); ?></div>
     </header>
 
     <section class="form-card">
         <form action="proses/edit.php" method="POST" enctype="multipart/form-data" class="form-grid">
             <input type="hidden" name="id" value="<?= $data['id']; ?>">
             <input type="hidden" name="foto_lama" value="<?= aman($data['foto']); ?>">
-            <input type="hidden" name="nim_lama" value="<?= aman($data['nim']); ?>">
-
-            <div class="form-group">
-                <label>NIM <span>*</span></label>
-                <input type="text" name="nim" value="<?= aman($data['nim']); ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label>Nama Mahasiswa <span>*</span></label>
-                <input type="text" name="nama" value="<?= aman($data['nama']); ?>" required>
-            </div>
+            <input type="hidden" name="username_lama" value="<?= aman($username_lama); ?>">
 
             <div class="form-group">
                 <label>Jurusan <span>*</span></label>
@@ -72,13 +58,18 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
             </div>
 
             <div class="form-group">
-                <label>Prodi <span>*</span></label>
-                <input type="text" name="prodi" value="<?= aman($data['prodi']); ?>" required>
+                <label>NIDN <span>*</span></label>
+                <input type="text" name="nidn" value="<?= aman($data['nidn']); ?>" required>
             </div>
 
             <div class="form-group">
-                <label>Angkatan <span>*</span></label>
-                <input type="number" name="angkatan" value="<?= aman($data['angkatan']); ?>" required min="2000" max="2099">
+                <label>NIP</label>
+                <input type="text" name="nip" value="<?= aman($data['nip']); ?>">
+            </div>
+
+            <div class="form-group">
+                <label>Nama Dosen <span>*</span></label>
+                <input type="text" name="nama" value="<?= aman($data['nama']); ?>" required>
             </div>
 
             <div class="form-group">
@@ -87,15 +78,8 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
             </div>
 
             <div class="form-group">
-                <label>Dosen PA</label>
-                <select name="dosen_pa_id">
-                    <option value="">-- Belum Dipilih --</option>
-                    <?php while ($d = mysqli_fetch_assoc($dosen)) { ?>
-                        <option value="<?= $d['id']; ?>" <?= $d['id'] == $data['dosen_pa_id'] ? 'selected' : ''; ?>>
-                            <?= aman($d['nama']); ?>
-                        </option>
-                    <?php } ?>
-                </select>
+                <label>No HP</label>
+                <input type="text" name="no_hp" value="<?= aman($data['no_hp']); ?>">
             </div>
 
             <div class="form-group">
@@ -113,11 +97,10 @@ $dosen = mysqli_query($conn, "SELECT id, nama FROM dosen ORDER BY nama ASC");
 
             <div class="form-action form-full">
                 <a href="index.php" class="btn-secondary">Kembali</a>
-                <button type="submit" class="btn-primary">Update Mahasiswa</button>
+                <button type="submit" class="btn-primary">Update Dosen</button>
             </div>
         </form>
     </section>
-
 </main>
 
 <?php include "../../part/footer.php"; ?>

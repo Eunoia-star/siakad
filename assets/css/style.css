@@ -339,6 +339,17 @@
     margin: 0;
     color: #64748b;
 }
+
+.info-card {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+}
+
 .profile-card {
     background: white;
     padding: 28px;
@@ -612,3 +623,4 @@
         flex-direction: column;
     }
 }
+

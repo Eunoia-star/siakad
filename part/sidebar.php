@@ -15,7 +15,7 @@ $role = $_SESSION['role'] ?? '';
 
         <?php if ($role == 'super_admin') { ?>
 
-            <a href="../admin/dashboard.php" class="menu-item">
+            <a href="../admin/dashboard.php" class="menu-item" >
                 <i class="bi bi-grid-fill"></i>
                 Dashboard
             </a>
